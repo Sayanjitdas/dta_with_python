@@ -22,6 +22,25 @@ class DoublyLinkedList:
         self.tail = self.node
         self.length = 1
 
+
+    def append(self,value):
+        """ DLL is same as LL but with another node link to 
+        prevoius node
+        Time complexity --> BigO(1)
+        Args:
+            value : value of the node
+        """
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            self.tail = new_node
+        self.length += 1
+
+
     def print_list(self):
         temp = self.head
         while temp is not None:
@@ -31,4 +50,5 @@ class DoublyLinkedList:
 
 if __name__ == "__main__":
     dll = DoublyLinkedList(400)
+    dll.append(101)
     dll.print_list()

@@ -98,13 +98,187 @@ class LinkedList:
         self.length -= 1
         # popping out last node value
         return post.value
+    
+    def prepend(self,value):
+
+        """
+        This method adds a new node at the beginning of the linked list
+        Time complexity --> BigO(1)
+        """
+        # initializing new node
+        new_node = Node(value)
+        # prepend when linked list is empty
+        if self.length == 0:
+            self.head = new_node
+            self.tail = new_node
+        # prepend when linked list has item in it
+        else:
+            new_node.next = self.head
+            self.head = new_node
+        self.length += 1
+
+    def pre_pop(self):
+
+        """
+        This method pops out first node from linked list
+        Time complexity --> BigO(1)
+        """
+
+        # edge case where linked list empty
+        if self.length == 0:
+            return None
+        # edge case where linked list has only one item
+        elif self.length == 1:
+            temp = self.head
+            self.head = None
+            self.tail = None
+            self.length = 0
+            return temp.value
+        else:
+            temp = self.head
+            self.head = self.head.next
+            self.length -= 1
+            return temp.value
+
+    def get_value_by_index(self,index):
+
+        """
+        This method return the value of the node
+        with specified index 
+        Time complexity --> BigO(n)
+        """
+        # edge case where index is out of bound
+        if index < 0 or index >= self.length:
+            raise IndexError(f"{index} is out of range..")
+        else:
+            temp = self.head
+            for _ in range(index):
+                temp = temp.next
+            return temp.value
+    
+    def set_value_by_index(self,index,value):
+
+        """
+        This method set the sepcified value in the specified index
+        of the linked list.
+        time complexity --> BigO(n)
+        """
+
+        # edge case where index is out of range
+        if index < 0 or index >= self.length:
+            raise IndexError(f"{index} is out of range..")
+        else:
+            temp = self.head
+            for _ in range(index):
+                temp = temp.next
+            temp.value = value
+
+    def insert(self,index,value):
+
+        """
+        This method insert a new node at a specified index 
+        in a linked list 
+        Time complexity --> BigO(n)
+        """
+
+        # edge case where index out of range
+        if index < 0 or index >= self.length:
+            raise IndexError(f"Index {index} is out of range..")
+        # edge case where index is 0 i.e the first index in the linked list
+        elif index == 0:
+            self.prepend(value) # best case scenario BigO(1)
+        # edge case where index is last index in the linked list
+        elif index == self.length - 1:
+            self.append(value) # worst case scenario BigO(n)
+        else:
+            # creating a new node
+            new_node = Node(value)
+            # creating a temp variable to point to previous node of 
+            # the index specified
+            temp = self.head
+            for _ in range(index - 1):
+                temp = temp.next
+
+            # pointing the new node to existing next node
+            new_node.next = temp.next
+            # inserting the new node at the index
+            temp.next = new_node
+            # incrementing the length by 1
+            self.length +=1
+
+    def remvove(self,index):
+
+        """
+        This method removes a node from a linked list at a specified index
+        Time complexity --> BigO(n)
+        """
+
+        # edge case where index out of range
+        if index < 0 or index >= self.length:
+            raise IndexError(f"index {index} is out of range..")
+        # edge case where index is 0
+        elif index == 0:
+            temp = self.pre_pop() # at best case 
+        # edge case where index is last index
+        elif index == self.length - 1:
+            temp = self.pop() # at worst case
+        else:
+            # grabbing the node of previous index
+            prev = self.head
+            for _ in range(index - 1):
+                prev = prev.next
+            # grabbing the node to remove
+            temp = prev.next
+            # re assigning the next node with prev node
+            prev.next = temp.next
+            temp = None
+            self.length -= 1
+
+    def reverse(self):
+
+        """
+        This method reverse the linked list
+        Time complexity --> BigO(n)
+        """
+
+        # swapping the head and tail
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        # creating two counter variable
+        before = None
+        after = temp
+        # reversing the linked list
+        for _ in range(self.length):
+            after = temp.next # assign the next node
+            temp.next = before # reversing the link of the node
+            # shifting the counter
+            before = temp
+            temp = after
+
 
 if __name__ == "__main__":
     new_linked_list = LinkedList(100)
     new_linked_list.append(101)
-    # new_linked_list.append(102)
+    new_linked_list.append(102)
+    # new_linked_list.print_list()
+    # print("popped -->",new_linked_list.pop())
+    # print("popped -->",new_linked_list.pop())
+    # print("popped -->",new_linked_list.pop())
+    # print("---------------------")
+    # new_linked_list.prepend(99)
+    # new_linked_list.print_list()
+    # print("---------------------")
+    # new_linked_list.pre_pop()
+    # new_linked_list.print_list()
+    # print(new_linked_list.get_value_by_index(2))
+    # new_linked_list.set_value_by_index(2,200)
+    # new_linked_list.print_list()
+    # new_linked_list.insert(1,500)
+    # new_linked_list.print_list()
+    # new_linked_list.remvove(1)
+    # new_linked_list.print_list()
     new_linked_list.print_list()
-    print("popped -->",new_linked_list.pop())
-    print("popped -->",new_linked_list.pop())
-    print("popped -->",new_linked_list.pop())
+    print("after reverse..")
+    new_linked_list.reverse()
     new_linked_list.print_list()

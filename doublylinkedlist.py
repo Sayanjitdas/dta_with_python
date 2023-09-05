@@ -53,14 +53,53 @@ class DoublyLinkedList:
             self.head = None
             self.tail = None
             self.length = 0
-            return node
         else:
             node = self.tail
             self.tail = node.prev
             self.tail.next = None
             self.length -= 1
-            return node
 
+        return node
+    
+    def prepend(self,value):
+        """DLL prepend work similar to LL prepend
+        only you have to point the prev of the next node to new node
+        Time complexity --> BigO(1) 
+        """
+        new_node = Node(value)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+            self.length += 1
+        else:
+            temp = self.head
+            self.head = new_node
+            self.head.next = temp
+            temp.prev = self.head
+            self.length +=1
+            
+    def pop_first(self):
+        """Identical to LL 
+        Raises:
+            ValueError: When DLL is empty
+
+        Returns:
+            node
+        """
+
+        if self.head is None:
+            raise ValueError("DLL is empty")
+        if self.length == 1:
+            node = self.head
+            self.head = None
+            self.tail = None
+            self.length = 0
+        else:
+            node = self.head
+            self.head = node.next
+            self.head.prev = None
+            self.length -= 1
+        return node
 
     def print_list(self):
         temp = self.head
@@ -72,6 +111,8 @@ class DoublyLinkedList:
 if __name__ == "__main__":
     dll = DoublyLinkedList(400)
     dll.append(101)
-    print(dll.pop().value)
+    dll.prepend(99)
     # print(dll.pop().value)
-    dll.print_list()
+    # print(dll.pop().value)
+    print(dll.pop_first().value)
+    # dll.print_list()

@@ -80,6 +80,7 @@ class DoublyLinkedList:
             
     def pop_first(self):
         """Identical to LL 
+        Time complexity --> BigO(1)
         Raises:
             ValueError: When DLL is empty
 
@@ -100,6 +101,37 @@ class DoublyLinkedList:
             self.head.prev = None
             self.length -= 1
         return node
+    
+    def get_value_by_index(self,index):
+        """Similar to LL but only optimization is
+        we can search either of the end head or tail
+        depending on the index number and size of the length.
+        Time complexity --> BigO(n)
+        """
+        if index < 0 or index >= self.length:
+            raise IndexError("Index out of range for DLL..")
+        if index < self.length/2:
+            # will search on first half of the DLL
+            temp = self.head
+            for _ in range(index):
+                temp = temp.next
+            return temp
+        else:
+            # will search on second half of the DLL
+            temp = self.tail
+            for _ in range(self.length - 1,index, -1):
+                temp = temp.prev
+            return temp
+
+    def set_value_by_index(self,index,value):
+        """
+        """
+        if index < 0 or index >= self.length:
+            raise IndexError("Index out of range for DLL..")
+        else:
+            node = self.get_value_by_index(index)
+            node.value = value
+
 
     def print_list(self):
         temp = self.head
@@ -111,8 +143,10 @@ class DoublyLinkedList:
 if __name__ == "__main__":
     dll = DoublyLinkedList(400)
     dll.append(101)
+    dll.append(201)
     dll.prepend(99)
     # print(dll.pop().value)
     # print(dll.pop().value)
-    print(dll.pop_first().value)
-    # dll.print_list()
+    # print(dll.pop_first().value)
+    print(dll.set_value_by_index(2,500))
+    dll.print_list()
